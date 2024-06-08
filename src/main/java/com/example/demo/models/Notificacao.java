@@ -1,6 +1,5 @@
 package com.example.demo.models;
 
-import com.example.demo.DTOs.RegistrarNotificacaoDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,25 +14,26 @@ import java.sql.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table()
 public class Notificacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Date data;
-    private String localizacao;
-    private String longitude;
-    private String latitude;
-    private Integer usuario;
-    private Integer foco;
-    private String foto;
+    private String endereco;
+    private String bairro;
+    private String cidade;
+    private String descricao;
+    private boolean denunciaAnonima;
+    private String imageUrl;
 
-    public Notificacao(RegistrarNotificacaoDTO data) {
-        this.data = data.data();
-        this.localizacao = data.localizacao();
-        this.longitude = data.longitude();
-        this.latitude = data.latitude();
-        this.usuario = data.usuario();
-        this.foco = data.foco();
-        this.foto = data.foto();
+    public Notificacao(Date data, String endereco, String bairro , String cidade, String descricao, boolean denunciaAnonima, String imageUrl) {
+        this.data = data;
+        this.endereco = endereco;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.descricao = descricao;
+        this.denunciaAnonima = denunciaAnonima;
+        this.imageUrl = imageUrl;
     }
 }

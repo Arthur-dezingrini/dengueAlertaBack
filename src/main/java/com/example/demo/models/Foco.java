@@ -18,19 +18,4 @@ public class Foco {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NonNull
-    @Enumerated(EnumType.STRING)
-    private Status status;
-    private String foto;
-    private String localizacao;
-    @NonNull
-    private String latitude;
-    @NonNull
-    private String longitude;
-    @OneToOne
-    private Agente agenteResponsavel;
-    private String observacoes;
-    @OneToMany(mappedBy = "foco")
-    @NonNull
-    private List<Notificacao> notificacao;
 }
