@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileOutputStream;
 import java.util.Base64;
+import java.util.UUID;
 
 @Service
 public class NotificacaoService {
@@ -25,11 +26,11 @@ public class NotificacaoService {
                 String imageUrl = "";
                 if (data.imagem() != null) {
                     byte[] imagemBytes = Base64.getDecoder().decode(data.imagem());
-                    imageUrl = s3Service.uploadFile(imagemBytes, data.data().toString() + ".jpg", "image/jpeg");
+                    imageUrl = s3Service.uploadFile(imagemBytes, UUID.randomUUID() + ".jpg", "image/jpeg");
                 }
                 Notificacao notificacao = new Notificacao(data.data(), data.endereco(), data.bairro(), data.cidade(), data.descricao(), data.denunciaAnonima(), imageUrl);
                 notificacaoRepository.save(notificacao);
-                return ResponseEntity.status(200).body("Notificação adicionada com sucesso! URL da imagem: " + imageUrl);
+                return ResponseEntity.status(200).body("Notificação adicionada com sucesso!");
             } else {
                 return ResponseEntity.badRequest().body("Dados da notificação são inválidos");
             }
