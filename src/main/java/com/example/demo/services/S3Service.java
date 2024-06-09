@@ -7,14 +7,11 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectResult;
+import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 
 @Service
 public class S3Service {
@@ -35,19 +32,18 @@ public class S3Service {
 
     public String uploadFile(byte[] fileBytes, String fileName, String contentType) throws IOException {
         try {
-            File tempFile = File.createTempFile("tempFile", null);
-            FileOutputStream fos = new FileOutputStream(tempFile);
-            fos.write(fileBytes);
-            fos.close();
+            try (InputStream inputStream = new ByteArrayInputStream(fileBytes)) {
+                ObjectMetadata metadata = new ObjectMetadata();
+                metadata.setContentLength(fileBytes.length);
+                metadata.setContentType(contentType);
 
-            ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentLength(fileBytes.length);
-            metadata.setContentType(contentType);
+                PutObjectRequest request = new PutObjectRequest(bucketName, fileName, inputStream, metadata);
+                s3Client.putObject(request);
 
-            PutObjectRequest request = new PutObjectRequest(bucketName, fileName, tempFile).withMetadata(metadata);
-            PutObjectResult result = s3Client.putObject(request);
-
-            return s3Client.getUrl(bucketName, fileName).toString();
+                return s3Client.getUrl(bucketName, fileName).toString();
+            } catch (IOException e) {
+                throw new IOException("Erro ao fazer upload do arquivo para o Amazon S3: " + e.getMessage());
+            }
         }
         catch (IOException e) {
             throw new IOException("Erro ao fazer upload do arquivo para o Amazon S3: " + e.getMessage());
