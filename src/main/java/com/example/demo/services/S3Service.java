@@ -5,13 +5,14 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.*;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class S3Service {
@@ -37,10 +38,12 @@ public class S3Service {
                 metadata.setContentLength(fileBytes.length);
                 metadata.setContentType(contentType);
 
-                PutObjectRequest request = new PutObjectRequest(bucketName, fileName, inputStream, metadata);
+                String objectKey = "imagens-publicas/" + fileName;
+
+                PutObjectRequest request = new PutObjectRequest(bucketName, objectKey, inputStream, metadata);
                 s3Client.putObject(request);
 
-                return s3Client.getUrl(bucketName, fileName).toString();
+                return s3Client.getUrl(bucketName, objectKey).toString();
             } catch (IOException e) {
                 throw new IOException("Erro ao fazer upload do arquivo para o Amazon S3: " + e.getMessage());
             }

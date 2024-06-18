@@ -1,5 +1,6 @@
 package com.example.demo.models;
 
+import com.example.demo.DTOs.UsuarioDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,5 +19,14 @@ public class Usuario extends Pessoa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String endereco;
+    private String senha;
+
+    public Usuario(UsuarioDTO user) {
+        super(user.nome(), user.cpf(), user.email(), user.celular());
+        this.setNome(user.nome());
+        this.setCpf(user.cpf());
+        this.setEmail(user.email());
+        this.setCelular(user.celular());
+        this.senha = user.senha();
+    }
 }

@@ -9,17 +9,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Pessoa {
-    @NonNull
     private String nome;
-    @NonNull
-    private Integer cpf;
-    @NonNull
+    private Long cpf;
     private String email;
-    @NonNull
-    private String telefone;
+    private Long celular;
 
+    public Pessoa(String nome, Long cpf, String email, Long telefone) {
+    }
 
-    public void notificaFoco() {
+    public Pessoa() {
 
     }
 }

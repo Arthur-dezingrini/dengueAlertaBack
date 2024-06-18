@@ -3,7 +3,6 @@ package com.example.demo.services;
 import com.example.demo.DTOs.RegistrarNotificacaoDTO;
 import com.example.demo.models.Notificacao;
 import com.example.demo.repositories.notificacaoRepository;
-import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,6 +18,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.UUID;
+import java.util.List;
 
 @Service
 public class NotificacaoService {
@@ -61,14 +61,13 @@ public class NotificacaoService {
         }
     }
 
-    public void getNotificacoesUsuario(Long id) {
+    public ResponseEntity<List> getNotificacoesUsuario() {
         try {
-            if (id != null) {
-                notificacaoRepository.getReferenceById(id);
-            }
+            return ResponseEntity.status(200).body(notificacaoRepository.findAll());
         } catch (Exception e) {
             System.out.println("Erro" + e.getMessage());
         }
+        return null;
     }
 
     public void putNotificacao(Notificacao notificacao, Long id) {
@@ -92,21 +91,6 @@ public class NotificacaoService {
             System.out.println("Erro" + e.getMessage());
         }
     }
-
-
-
-    public byte[] resizeImage(byte[] imageBytes, int width, int height) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Thumbnails.of(new ByteArrayInputStream(imageBytes))
-                .size(width, height)
-                .outputFormat("jpg")
-                .outputQuality(0.8) // Qualidade da compressão (0.0 a 1.0)
-                .toOutputStream(baos);
-        return baos.toByteArray();
-    }
-
-
-
 
     private BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) {
         Image resultingImage = originalImage.getScaledInstance(targetWidth, targetHeight, Image.SCALE_SMOOTH);

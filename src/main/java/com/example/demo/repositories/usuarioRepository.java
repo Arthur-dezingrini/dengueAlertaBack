@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 
 public interface usuarioRepository extends JpaRepository<Usuario, Long> {
+    Boolean existsByCpf(Long cpf);
 }
