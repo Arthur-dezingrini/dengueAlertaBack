@@ -30,12 +30,7 @@ public class UsuarioService {
 
     public ResponseEntity<String> postUsuario(Usuario user) {
         try {
-            if (repository.existsByCpf(user.getCpf())) {
-                return ResponseEntity.status(500).body("CPF ja Cadastrado");
-            } else {
-                repository.save(user);
-                return ResponseEntity.status(200).body("Usuario cadastrado com sucesso");
-            }
+            return ResponseEntity.status(500).body("CPF ja Cadastrado");
         } catch (Exception e) {
             System.out.println("Erro" + e.getMessage());
             return ResponseEntity.status(500).body("Erro ao adicionar notificação");

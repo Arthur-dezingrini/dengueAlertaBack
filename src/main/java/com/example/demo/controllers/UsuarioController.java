@@ -18,9 +18,4 @@ public class UsuarioController {
     public ResponseEntity<String> cadastrarUsuario (@RequestBody UsuarioDTO user) {
         return usuarioService.postUsuario(new Usuario(user));
     }
-
-//    @GetMapping()
-//    public ResponseEntity<String> listarUsuario (Long cpf) {
-//        return usuarioService.getUsuario(cpf);
-//    }
 }
