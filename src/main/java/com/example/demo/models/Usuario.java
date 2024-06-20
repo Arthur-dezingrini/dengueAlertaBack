@@ -32,7 +32,6 @@ public class Usuario extends Pessoa {
         this.senha = user.senha();
     }
 
-
     public boolean isLoginCorrect(LoginDTO login, PasswordEncoder passwordEncoder) {
         return passwordEncoder.matches(login.senha(), this.senha);
     }
