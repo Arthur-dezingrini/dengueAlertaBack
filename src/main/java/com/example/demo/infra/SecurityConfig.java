@@ -39,7 +39,7 @@ public class SecurityConfig  {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "usuario/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "usuario/cadastrar").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
         return http.build();
