@@ -19,41 +19,31 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.cors.CorsConfiguration;
 
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig  {
 
-    @Value("classpath:app.pub")
+    @Value("${PUBLIC_KEY}")
     private RSAPublicKey publicKey;
-    @Value("classpath:app.key")
+    @Value("${PRIVATE_KEY}")
     private RSAPrivateKey privateKey;
 
-        @Bean
-        SecurityFilterChain getSecurity(HttpSecurity http) throws Exception {
-            http.csrf(AbstractHttpConfigurer::disable)
-                    .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                    .authorizeHttpRequests(auth -> auth
-                            .requestMatchers(HttpMethod.POST, "usuario/login").permitAll()
-                            .requestMatchers(HttpMethod.POST, "usuario/cadastrar").permitAll()
-                            .anyRequest().authenticated()
-                    )
-                    .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
-            http.cors(cors -> cors.configurationSource(request -> {
-                CorsConfiguration config = new CorsConfiguration();
-                config.setAllowedOrigins(List.of("*")); // Permite todos os domínios
-                config.setAllowedMethods(List.of("*")); // Permite todos os métodos
-                config.setAllowedHeaders(List.of("*")); // Permite todos os cabeçalhos
-                return config;
-            }));
-
-            return http.build();
-            }
+    @Bean
+    SecurityFilterChain getSecurity(HttpSecurity http) throws Exception {
+        http.csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.POST, "usuario/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "usuario/cadastrar").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
+        return http.build();
+        }
 
         @Bean
         public JwtEncoder jwtEncoder() {
