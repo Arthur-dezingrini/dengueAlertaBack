@@ -1,9 +1,6 @@
 package com.example.demo.services;
 
-import com.example.demo.DTOs.LoginDTO;
-import com.example.demo.DTOs.LoginResponseDTO;
-import com.example.demo.DTOs.RegistrarNotificacaoDTO;
-import com.example.demo.DTOs.UsuarioDTO;
+import com.example.demo.DTOs.*;
 import com.example.demo.models.Notificacao;
 import com.example.demo.models.Usuario;
 import com.example.demo.repositories.notificacaoRepository;
@@ -92,11 +89,11 @@ public class UsuarioService {
         return ResponseEntity.ok(new LoginResponseDTO(jwtValue, expiresIn, user));
     }
 
-    public void alterarFotoPerfil(String foto, Long id) throws IOException {
-        var user = repository.getReferenceById(id);
+    public void alterarFotoPerfil(AlterarFotoDTO data) throws IOException {
+        var user = repository.getReferenceById(data.id());
 
 
-        byte[] imagemBytes = Base64.getDecoder().decode(foto);
+        byte[] imagemBytes = Base64.getDecoder().decode(data.foto());
         BufferedImage image = ImageIO.read(new ByteArrayInputStream(imagemBytes));
         BufferedImage resizedImage = imageService.resizeImage(image, 800, 600);
         byte[] compressedImageBytes = imageService.compressImage(resizedImage, 1f);

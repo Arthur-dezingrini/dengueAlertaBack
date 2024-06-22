@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import com.example.demo.DTOs.AlterarFotoDTO;
 import com.example.demo.DTOs.LoginDTO;
 import com.example.demo.DTOs.LoginResponseDTO;
 import com.example.demo.DTOs.UsuarioDTO;
@@ -29,8 +30,8 @@ public class UsuarioController {
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginDTO login) {
         return usuarioService.verificaLogin(login);
     }
-    @PostMapping("/alterarFotoPerfil")
-    public void alterarFotoPerfil (@RequestBody String foto, Long id) throws IOException {
-        usuarioService.alterarFotoPerfil(foto, id);
-    }
+        @PostMapping("/alterarFotoPerfil")
+        public void alterarFotoPerfil (@RequestBody AlterarFotoDTO data) throws IOException {
+            usuarioService.alterarFotoPerfil(data);
+        }
 }
