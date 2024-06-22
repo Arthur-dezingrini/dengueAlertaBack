@@ -22,7 +22,7 @@ public class Usuario extends Pessoa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String senha;
-    private String foto_perfil;
+    private String foto;
 
     public Usuario(UsuarioDTO user) {
         super(user.nome(), user.cpf(), user.email(), user.celular());

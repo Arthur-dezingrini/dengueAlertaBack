@@ -68,25 +68,30 @@ public class UsuarioService {
         }
     }
 
-    public ResponseEntity<LoginResponseDTO> verificaLogin(LoginDTO loginDTO) {
-        var user = repository.findByCpf(loginDTO.cpf());
-        if (user.isEmpty() || !user.get().isLoginCorrect(loginDTO, bCryptPasswordEncoder)) {
-            return ResponseEntity.status(210).body(new LoginResponseDTO("Usuario ou senha Incoreto, tente novamente", 0L, ""));
+    public ResponseEntity<LoginResponseDTO> verificaLogin(LoginDTO loginDTO) throws Exception {
+        try {
+            var user = repository.findByCpf(loginDTO.cpf());
+            if (user.isEmpty() || !user.get().isLoginCorrect(loginDTO, bCryptPasswordEncoder)) {
+                return ResponseEntity.status(210).body(new LoginResponseDTO("Usuario ou senha Incoreto, tente novamente", 0L, ""));
+            }
+
+            var now = Instant.now();
+            var expiresIn = 3200L;
+
+            var claims = JwtClaimsSet.builder()
+                    .issuer("BackEnd ")
+                    .subject((user.get().getId()).toString())
+                    .expiresAt(now.plusSeconds(expiresIn))
+                    .issuedAt(now)
+                    .build();
+
+            var jwtValue = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+
+            return ResponseEntity.ok(new LoginResponseDTO(jwtValue, expiresIn, user));
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
         }
 
-        var now = Instant.now();
-        var expiresIn = 300L;
-
-        var claims = JwtClaimsSet.builder()
-                .issuer("BackEnd ")
-                .subject((user.get().getId()).toString())
-                .expiresAt(now.plusSeconds(expiresIn))
-                .issuedAt(now)
-                .build();
-
-        var jwtValue = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
-
-        return ResponseEntity.ok(new LoginResponseDTO(jwtValue, expiresIn, user));
     }
 
     public void alterarFotoPerfil(AlterarFotoDTO data) throws IOException {
@@ -99,7 +104,7 @@ public class UsuarioService {
         byte[] compressedImageBytes = imageService.compressImage(resizedImage, 1f);
         String imageUrl = s3Service.uploadFile(compressedImageBytes, UUID.randomUUID() + ".jpg", "image/jpeg");
 
-        user.setFoto_perfil(imageUrl);
+        user.setFoto(imageUrl);
         repository.save(user);
     }
 }

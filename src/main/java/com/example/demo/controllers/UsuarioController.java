@@ -27,7 +27,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginDTO login) {
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginDTO login) throws Exception {
         return usuarioService.verificaLogin(login);
     }
         @PostMapping("/alterarFotoPerfil")
