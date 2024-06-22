@@ -36,8 +36,8 @@ public class NotificacaoController {
     }
 
     @GetMapping("/notificacoes")
-    public ResponseEntity buscaNotificacoes () {
-        return notificacaoService.getNotificacoesUsuario();
+    public ResponseEntity buscaNotificacoes(@RequestParam(name = "id") Long userId) {
+        return notificacaoService.getNotificacoesUsuario(userId);
     }
 
 //    @PutMapping("/editar-notificacao/{ID}")

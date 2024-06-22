@@ -94,7 +94,7 @@ public class UsuarioService {
 
     }
 
-    public void alterarFotoPerfil(AlterarFotoDTO data) throws IOException {
+    public String alterarFotoPerfil(AlterarFotoDTO data) throws IOException {
         var user = repository.getReferenceById(data.id());
 
 
@@ -106,5 +106,6 @@ public class UsuarioService {
 
         user.setFoto(imageUrl);
         repository.save(user);
+        return imageUrl;
     }
 }

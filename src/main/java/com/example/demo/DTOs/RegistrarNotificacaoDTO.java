@@ -11,5 +11,8 @@ public record RegistrarNotificacaoDTO(
         String cidade,
         String descricao,
         boolean denunciaAnonima,
-        String imagem) {
+        String imagem,
+        Long userId,
+        double latitude,
+        double longitude) {
 }

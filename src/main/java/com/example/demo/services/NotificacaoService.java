@@ -6,6 +6,7 @@ import com.example.demo.repositories.notificacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -35,7 +36,7 @@ public class NotificacaoService {
                     byte[] compressedImageBytes = imageService.compressImage(resizedImage, 1f);
                     imageUrl = s3Service.uploadFile(compressedImageBytes, UUID.randomUUID() + ".jpg", "image/jpeg");
                 }
-                Notificacao notificacao = new Notificacao(data.data(), data.endereco(), data.bairro(), data.cidade(), data.descricao(), data.denunciaAnonima(), imageUrl);
+                Notificacao notificacao = new Notificacao(data.data(), data.endereco(), data.bairro(), data.cidade(), data.descricao(), data.denunciaAnonima(), imageUrl, data.userId(), data.latitude(), data.longitude());
                 notificacaoRepository.save(notificacao);
                 return ResponseEntity.status(200).body("Notificação adicionada com sucesso!");
             } else {
@@ -57,9 +58,9 @@ public class NotificacaoService {
         }
     }
 
-    public ResponseEntity<List> getNotificacoesUsuario() {
+    public ResponseEntity<List> getNotificacoesUsuario(Long id) {
         try {
-            return ResponseEntity.status(200).body(notificacaoRepository.findAll());
+            return ResponseEntity.status(200).body(notificacaoRepository.findByUserId(id));
         } catch (Exception e) {
             System.out.println("Erro" + e.getMessage());
         }

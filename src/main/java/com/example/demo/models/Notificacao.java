@@ -26,8 +26,11 @@ public class Notificacao {
     private String descricao;
     private boolean denunciaAnonima;
     private String imageUrl;
+    private Long userId;
+    private Double latitude;
+    private Double longitude;
 
-    public Notificacao(Date data, String endereco, String bairro , String cidade, String descricao, boolean denunciaAnonima, String imageUrl) {
+    public Notificacao(Date data, String endereco, String bairro , String cidade, String descricao, boolean denunciaAnonima, String imageUrl, Long userId, double latitude, double longitude) {
         this.data = data;
         this.endereco = endereco;
         this.bairro = bairro;
@@ -35,5 +38,8 @@ public class Notificacao {
         this.descricao = descricao;
         this.denunciaAnonima = denunciaAnonima;
         this.imageUrl = imageUrl;
+        this.userId = userId;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 }

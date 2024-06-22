@@ -31,7 +31,7 @@ public class UsuarioController {
         return usuarioService.verificaLogin(login);
     }
         @PostMapping("/alterarFotoPerfil")
-        public void alterarFotoPerfil (@RequestBody AlterarFotoDTO data) throws IOException {
-            usuarioService.alterarFotoPerfil(data);
+        public String alterarFotoPerfil (@RequestBody AlterarFotoDTO data) throws IOException {
+            return usuarioService.alterarFotoPerfil(data);
         }
 }
