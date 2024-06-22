@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("usuario")
 public class UsuarioController {
@@ -26,5 +28,9 @@ public class UsuarioController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginDTO login) {
         return usuarioService.verificaLogin(login);
+    }
+    @PostMapping("/alterarFotoPerfil")
+    public void alterarFotoPerfil (@RequestBody String foto, Long id) throws IOException {
+        usuarioService.alterarFotoPerfil(foto, id);
     }
 }

@@ -36,6 +36,10 @@ import java.util.UUID;
 public class UsuarioService {
 
     @Autowired
+    ImageService imageService;
+    @Autowired
+    S3Service s3Service;
+    @Autowired
     usuarioRepository repository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtEncoder jwtEncoder;
@@ -86,5 +90,19 @@ public class UsuarioService {
         var jwtValue = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
 
         return ResponseEntity.ok(new LoginResponseDTO(jwtValue, expiresIn, user));
+    }
+
+    public void alterarFotoPerfil(String foto, Long id) throws IOException {
+        var user = repository.getReferenceById(id);
+
+
+        byte[] imagemBytes = Base64.getDecoder().decode(foto);
+        BufferedImage image = ImageIO.read(new ByteArrayInputStream(imagemBytes));
+        BufferedImage resizedImage = imageService.resizeImage(image, 800, 600);
+        byte[] compressedImageBytes = imageService.compressImage(resizedImage, 1f);
+        String imageUrl = s3Service.uploadFile(compressedImageBytes, UUID.randomUUID() + ".jpg", "image/jpeg");
+
+        user.setFoto_perfil(imageUrl);
+        repository.save(user);
     }
 }
