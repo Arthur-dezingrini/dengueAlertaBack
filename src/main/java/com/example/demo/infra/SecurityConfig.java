@@ -27,9 +27,9 @@ import java.security.interfaces.RSAPublicKey;
 @EnableWebSecurity
 public class SecurityConfig  {
 
-    @Value("${PUBLIC_KEY}")
+    @Value("classpath:app.pub")
     private RSAPublicKey publicKey;
-    @Value("${PRIVATE_KEY}")
+    @Value("classpath:app.key")
     private RSAPrivateKey privateKey;
 
     @Bean
@@ -39,7 +39,7 @@ public class SecurityConfig  {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "usuario/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "usuario/cadastrar").permitAll()
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
         return http.build();
