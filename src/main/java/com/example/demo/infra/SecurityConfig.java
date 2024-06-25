@@ -27,9 +27,9 @@ import java.security.interfaces.RSAPublicKey;
 @EnableWebSecurity
 public class SecurityConfig  {
 
-    @Value("${PUBLIC_KEY}")
+    @Value("classpath:app.pub")
     private RSAPublicKey publicKey;
-    @Value("${PRIVATE_KEY}")
+    @Value("classpath:app.key")
     private RSAPrivateKey privateKey;
 
     @Bean
