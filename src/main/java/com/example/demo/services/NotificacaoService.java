@@ -70,7 +70,7 @@ public class NotificacaoService {
     public void putNotificacao(Notificacao notificacao, Long id) {
         try {
             if (id != null) {
-                Notificacao notificacaoAntiga = notificacaoRepository.getReferenceById(id);
+                notificacao.setId(id);
                 notificacaoRepository.save(notificacao);
             }
         } catch (Exception e) {

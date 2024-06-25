@@ -96,19 +96,15 @@ public class UsuarioService {
 
     public String alterarFotoPerfil(AlterarFotoDTO data) throws IOException {
         var user = repository.getReferenceById(data.id());
-        System.out.println("chegou aqui");
-        System.out.println(user);
+
         byte[] imagemBytes = Base64.getDecoder().decode(data.foto());
-        System.out.println("imagem byte: " + imagemBytes.length);
         BufferedImage image = ImageIO.read(new ByteArrayInputStream(imagemBytes));
-        System.out.println(image);
         BufferedImage resizedImage = imageService.resizeImage(image, 800, 600);
         byte[] compressedImageBytes = imageService.compressImage(resizedImage, 1f);
-        System.out.println(compressedImageBytes.length);
         String imageUrl = s3Service.uploadFile(compressedImageBytes, UUID.randomUUID() + ".jpg", "image/jpeg");
-        System.out.println(imageUrl);
         user.setFoto(imageUrl);
         repository.save(user);
+
         return imageUrl;
     }
 }

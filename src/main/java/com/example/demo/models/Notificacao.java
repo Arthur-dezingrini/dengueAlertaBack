@@ -1,11 +1,14 @@
 package com.example.demo.models;
 
+import com.example.demo.DTOs.RegistrarNotificacaoDTO;
+import com.fasterxml.jackson.databind.util.BeanUtil;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import java.sql.Date;
 
@@ -41,5 +44,9 @@ public class Notificacao {
         this.userId = userId;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public Notificacao(RegistrarNotificacaoDTO data) {
+        BeanUtils.copyProperties(data, this);
     }
 }

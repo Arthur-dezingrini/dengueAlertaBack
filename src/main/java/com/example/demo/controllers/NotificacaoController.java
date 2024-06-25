@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.DTOs.RegistrarNotificacaoDTO;
+import com.example.demo.models.Notificacao;
 import com.example.demo.services.NotificacaoService;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,12 +41,12 @@ public class NotificacaoController {
         return notificacaoService.getNotificacoesUsuario(userId);
     }
 
-//    @PutMapping("/editar-notificacao/{ID}")
-//    public void editarNotificacao (@RequestBody RegistrarNotificacaoDTO data, @PathParam("ID") Long id) {
-//        if (data != null) {
-//        notificacaoService.putNotificacao(new Notificacao(data), id);
-//    }
-//}
+    @PutMapping("/atualizar")
+    public void editarNotificacao (@RequestBody RegistrarNotificacaoDTO data, @PathParam("id") Long id) {
+        if (data != null) {
+        notificacaoService.putNotificacao(new Notificacao(data), id);
+    }
+}
 
     @DeleteMapping("/deletar-notificacao/{ID}")
     public void deletarNotificacao (@PathParam("ID") Long id) {
